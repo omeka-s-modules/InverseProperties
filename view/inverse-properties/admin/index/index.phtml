@@ -1,0 +1,51 @@
+<?php
+$this->htmlElement('body')->appendAttribute('class', 'inverse-properties');
+$propertyPairs[] = ['', ''];
+?>
+
+<?php echo $this->pageTitle($this->translate('Manage'), 1, $this->translate('Inverse properties')); ?>
+
+<form method="post">
+
+<div id="page-actions">
+    <input type="submit" value="<?php echo $this->escapeHtml($this->translate('Submit')); ?>">
+</div>
+<div id="property-pairs" class="field removable multi-value" role="group">
+    <div class="field-meta">
+        <span class="label"><?php echo $this->translate('Inverse properties'); ?></span>
+        <button type="button" class="add-value o-icon-add button" aria-label="<?php echo $this->translate('Add new inverse property'); ?>" title="<?php echo $this->translate('Add new inverse property'); ?>"></button>
+    </div>
+    <div class="inputs">
+        <?php foreach ($propertyPairs as $index => $propertyPair): ?>
+        <div class="value">
+            <?php echo $this->propertySelect([
+                'name' => sprintf('property_pair[%s][p1]', $index),
+                'options' => [
+                    'empty_option' => '',
+                ],
+                'attributes' => [
+                    'value' => $propertyPair[0],
+                    'class' => 'chosen-select',
+                    'data-placeholder' => 'Select property…', // @translate
+                ],
+            ]); ?>
+            <?php echo $this->propertySelect([
+                'name' => sprintf('property_pair[%s][p2]', $index),
+                'options' => [
+                    'empty_option' => '',
+                ],
+                'attributes' => [
+                    'value' => $propertyPair[1],
+                    'class' => 'chosen-select',
+                    'data-placeholder' => 'Select property…', // @translate
+                ],
+            ]); ?>
+            <button type="button" class="o-icon-delete remove-value button" aria-label="<?php echo $this->translate('Remove value'); ?>" title="<?php echo $this->translate('Remove value'); ?>"></button>
+        </div>
+        <?php endforeach; ?>
+    </div>
+</div>
+
+</form>
+
+<script></script>
