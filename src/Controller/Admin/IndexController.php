@@ -8,15 +8,15 @@ class IndexController extends AbstractActionController
 {
     public function indexAction()
     {
+        if ($this->getRequest()->isPost()) {
+            $propertyPairs = $this->params()->fromPost('property_pairs', []);
+            $this->inverseProperties()->setPropertyPairs($propertyPairs);
+            $this->messenger()->addSuccess('Property pairs successfully updated'); // @translate
+        }
         $propertyPairs = $this->inverseProperties()->getPropertyPairs();
 
-        if ($this->getRequest()->isPost()) {
-            $postData = $this->params()->fromPost();
-            echo '<pre>';print_r($postData);exit;
-        }
-
         $view = new ViewModel;
-        $view->setVariable('propertyPairs', [[1,2], [3,4], [5,6]]);
+        $view->setVariable('propertyPairs', $propertyPairs);
         return $view;
     }
 }
