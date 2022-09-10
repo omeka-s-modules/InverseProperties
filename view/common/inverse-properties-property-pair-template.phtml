@@ -1,0 +1,23 @@
+<div class="property-pair">
+    <?php echo $this->propertySelect([
+        'name' => 'property_pair[0][p1]',
+        'options' => [
+            'empty_option' => '',
+        ],
+        'attributes' => [
+            'class' => 'p1 chosen-select',
+            'data-placeholder' => 'Select property…', // @translate
+        ],
+    ]); ?>
+    <?php echo $this->propertySelect([
+        'name' => 'property_pair[0][p2]',
+        'options' => [
+            'empty_option' => '',
+        ],
+        'attributes' => [
+            'class' => 'p2 chosen-select',
+            'data-placeholder' => 'Select property…', // @translate
+        ],
+    ]); ?>
+    <button type="button" class="remove-property-pair o-icon-delete" aria-label="<?php echo $this->translate('Remove inverse property pair'); ?>" title="<?php echo $this->translate('Remove inverse property pair'); ?>"></button>
+</div>

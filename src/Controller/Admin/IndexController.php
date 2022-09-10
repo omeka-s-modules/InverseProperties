@@ -16,11 +16,7 @@ class IndexController extends AbstractActionController
         }
 
         $view = new ViewModel;
-        $view->setVariable('propertyPairs', [
-            [1,2],
-            [3,4],
-            [5,6],
-        ]);
+        $view->setVariable('propertyPairs', [[1,2], [3,4], [5,6]]);
         return $view;
     }
 }

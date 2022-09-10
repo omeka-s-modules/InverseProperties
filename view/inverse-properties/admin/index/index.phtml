@@ -1,51 +1,34 @@
 <?php
 $this->htmlElement('body')->appendAttribute('class', 'inverse-properties');
-$propertyPairs[] = ['', ''];
+$propertyPairTemplate = $this->partial('common/inverse-properties-property-pair-template');
 ?>
 
-<?php echo $this->pageTitle($this->translate('Manage'), 1, $this->translate('Inverse properties')); ?>
+<?php echo $this->pageTitle($this->translate('Manage'), 1, $this->translate('Inverse properties'), $this->translate('Inverse property pairs')); ?>
 
 <form method="post">
 
 <div id="page-actions">
     <input type="submit" value="<?php echo $this->escapeHtml($this->translate('Submit')); ?>">
 </div>
-<div id="property-pairs" class="field removable multi-value" role="group">
-    <div class="field-meta">
-        <span class="label"><?php echo $this->translate('Inverse properties'); ?></span>
-        <button type="button" class="add-value o-icon-add button" aria-label="<?php echo $this->translate('Add new inverse property'); ?>" title="<?php echo $this->translate('Add new inverse property'); ?>"></button>
-    </div>
-    <div class="inputs">
-        <?php foreach ($propertyPairs as $index => $propertyPair): ?>
-        <div class="value">
-            <?php echo $this->propertySelect([
-                'name' => sprintf('property_pair[%s][p1]', $index),
-                'options' => [
-                    'empty_option' => '',
-                ],
-                'attributes' => [
-                    'value' => $propertyPair[0],
-                    'class' => 'chosen-select',
-                    'data-placeholder' => 'Select property…', // @translate
-                ],
-            ]); ?>
-            <?php echo $this->propertySelect([
-                'name' => sprintf('property_pair[%s][p2]', $index),
-                'options' => [
-                    'empty_option' => '',
-                ],
-                'attributes' => [
-                    'value' => $propertyPair[1],
-                    'class' => 'chosen-select',
-                    'data-placeholder' => 'Select property…', // @translate
-                ],
-            ]); ?>
-            <button type="button" class="o-icon-delete remove-value button" aria-label="<?php echo $this->translate('Remove value'); ?>" title="<?php echo $this->translate('Remove value'); ?>"></button>
-        </div>
-        <?php endforeach; ?>
-    </div>
-</div>
+
+<div id="property-pairs"
+    data-property-pairs="<?php echo $this->escapeHtml(json_encode($propertyPairs)); ?>"
+    data-property-pair-template="<?php echo $this->escapeHtml($propertyPairTemplate); ?>"></div>
+
+<button type="button" class="add-property-pair o-icon-add" aria-label="<?php echo $this->translate('Add new inverse property pair'); ?>" title="<?php echo $this->translate('Add new inverse property pair'); ?>"></button>
 
 </form>
 
-<script></script>
+<script>
+const propertyPairsDiv = $('#property-pairs');
+const propertyPairs = propertyPairsDiv.data('propertyPairs');
+const propertyPairTemplate = $($.parseHTML(propertyPairsDiv.data('propertyPairTemplate')));
+$.each(propertyPairs, function(index, propertyPair) {
+    const propertyPairDiv = propertyPairTemplate.clone();
+    const p1Select = propertyPairDiv.find('.p1');
+    const p2Select = propertyPairDiv.find('.p2');
+    p1Select.attr('name', `property_pairs[${index}][p1]`).val(propertyPair[0]);
+    p2Select.attr('name', `property_pairs[${index}][p2]`).val(propertyPair[1]);
+    propertyPairsDiv.append(propertyPairDiv);
+});
+</script>
