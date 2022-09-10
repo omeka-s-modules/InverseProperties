@@ -5,7 +5,8 @@ $propertyPairTemplate = $this->partial('common/inverse-properties-property-pair-
 
 <?php echo $this->pageTitle($this->translate('Manage'), 1, $this->translate('Inverse properties'), $this->translate('Inverse property pairs')); ?>
 
-<form method="post">
+<?php echo $this->form()->openTag($form); ?>
+<?php echo $this->formElement($form->get('form_csrf')); ?>
 
 <div id="page-actions">
     <input type="submit" value="<?php echo $this->escapeHtml($this->translate('Submit')); ?>">
@@ -17,7 +18,7 @@ $propertyPairTemplate = $this->partial('common/inverse-properties-property-pair-
 
 <button type="button" id="add-property-pair" class="o-icon-add" aria-label="<?php echo $this->translate('Add new inverse property pair'); ?>" title="<?php echo $this->translate('Add new inverse property pair'); ?>"></button>
 
-</form>
+<?php echo $this->form()->closeTag(); ?>
 
 <script>
 const propertyPairsDiv = $('#property-pairs');
