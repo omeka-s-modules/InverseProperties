@@ -30,5 +30,14 @@ class Module extends AbstractModule
 
     public function attachListeners(SharedEventManagerInterface $sharedEventManager)
     {
+        $sharedEventManager->attach(
+            'Omeka\Api\Adapter\ItemAdapter',
+            'api.update.post',
+            function (Event $event) {
+                $resourceEntity = $event->getParam('response')->getContent();
+                $inverseProperties = $this->getServiceLocator()->get('InverseProperties\InverseProperties');
+                $inverseProperties->setInversePropertyValues($resourceEntity);
+            }
+        );
     }
 }

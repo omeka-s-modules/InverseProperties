@@ -1,8 +1,8 @@
 <?php
-namespace InverseProperties\Service\ControllerPlugin;
+namespace InverseProperties\Service\Stdlib;
 
 use Interop\Container\ContainerInterface;
-use InverseProperties\ControllerPlugin\InverseProperties;
+use InverseProperties\Stdlib\InverseProperties;
 use Zend\ServiceManager\Factory\FactoryInterface;
 
 class InversePropertiesFactory implements FactoryInterface

@@ -26,14 +26,14 @@ return [
             sprintf('%s/../data/doctrine-proxies', __DIR__),
         ],
     ],
-    'controllers' => [
-        'invokables' => [
-            'InverseProperties\Controller\Admin\Index' => Controller\Admin\IndexController::class,
+    'service_manager' => [
+        'factories' => [
+            'InverseProperties\InverseProperties' => Service\Stdlib\InversePropertiesFactory::class,
         ],
     ],
-    'controller_plugins' => [
+    'controllers' => [
         'factories' => [
-            'inverseProperties' => Service\ControllerPlugin\InversePropertiesFactory::class,
+            'InverseProperties\Controller\Admin\Index' => Service\Controller\Admin\IndexControllerFactory::class,
         ],
     ],
     'navigation' => [

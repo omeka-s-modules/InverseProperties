@@ -1,11 +1,11 @@
 <?php
-namespace InverseProperties\ControllerPlugin;
+namespace InverseProperties\Stdlib;
 
+use Omeka\Entity\Resource;
 use InverseProperties\Entity\InversePropertiesPropertyPair;
-use Zend\Mvc\Controller\Plugin\AbstractPlugin;
 use Zend\ServiceManager\ServiceLocatorInterface;
 
-class InverseProperties extends AbstractPlugin
+class InverseProperties
 {
     protected $services;
 
@@ -23,15 +23,7 @@ class InverseProperties extends AbstractPlugin
     public function getPropertyPairs() : array
     {
         $dql = 'SELECT pp FROM InverseProperties\Entity\InversePropertiesPropertyPair pp';
-        $propertyPairEntities = $this->entityManager->createQuery($dql)->getResult();
-        $propertyPairs = [];
-        foreach ($propertyPairEntities as $propertyPairEntity) {
-            $propertyPairs[] = [
-                'p1' => $propertyPairEntity->getP1()->getId(),
-                'p2' => $propertyPairEntity->getP2()->getId(),
-            ];
-        }
-        return $propertyPairs;
+        return $this->entityManager->createQuery($dql)->getResult();
     }
 
     /**
@@ -90,5 +82,40 @@ class InverseProperties extends AbstractPlugin
             ->createQuery($dqlDelete)
             ->setParameter('ids', $retainIds)
             ->execute();
+    }
+
+    /**
+     * Set inverse property values for a resource entity.
+     */
+    public function setInversePropertyValues(Resource $resourceEntity) : void
+    {
+        $resourceDataTypes = ['resource', 'resource:item', 'resource:itemset', 'resource:media'];
+        $inversePropertyRelations = [];
+        foreach ($this->getPropertyPairs() as $propertyPairEntity) {
+            $p1 = $propertyPairEntity->getP1();
+            $p2 = $propertyPairEntity->getP2();
+            $inversePropertyRelations[$p1->getId()][] = $p2->getId();
+            $inversePropertyRelations[$p2->getId()][] = $p1->getId();
+        }
+        $inversePropertyIds = array_keys($inversePropertyRelations);
+
+        // Iterate this resource's values.
+        foreach ($resourceEntity->getValues() as $valueEntity) {
+            $valueDataType = $valueEntity->getType();
+            if (!in_array($valueDataType, $resourceDataTypes)) {
+                // This is not a resource data type.
+                continue;
+            }
+            $valuePropertyId = $valueEntity->getProperty()->getId();
+            if (!in_array($valuePropertyId, $inversePropertyIds)) {
+                // This property has no inverse.
+                continue;
+            }
+            // This is a resource value with an inverse property.
+            $valueResourceEntity = $valueEntity->valueResource();
+
+            // @todo: get the valueResource's values and check if the
+            // inverse exists. If it doesn't, create it.
+        }
     }
 }
