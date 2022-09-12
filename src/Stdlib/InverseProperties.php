@@ -90,32 +90,34 @@ class InverseProperties
     public function setInversePropertyValues(Resource $resourceEntity) : void
     {
         $resourceDataTypes = ['resource', 'resource:item', 'resource:itemset', 'resource:media'];
-        $inversePropertyRelations = [];
+        $propertyInverses = [];
         foreach ($this->getPropertyPairs() as $propertyPairEntity) {
             $p1 = $propertyPairEntity->getP1();
             $p2 = $propertyPairEntity->getP2();
-            $inversePropertyRelations[$p1->getId()][] = $p2->getId();
-            $inversePropertyRelations[$p2->getId()][] = $p1->getId();
+            $propertyInverses[$p1->getId()][] = $p2->getId();
+            $propertyInverses[$p2->getId()][] = $p1->getId();
         }
-        $inversePropertyIds = array_keys($inversePropertyRelations);
+        $inversePropertyIds = array_keys($propertyInverses);
 
         // Iterate this resource's values.
         foreach ($resourceEntity->getValues() as $valueEntity) {
-            $valueDataType = $valueEntity->getType();
-            if (!in_array($valueDataType, $resourceDataTypes)) {
+            $dataType = $valueEntity->getType();
+            if (!in_array($dataType, $resourceDataTypes)) {
                 // This is not a resource data type.
                 continue;
             }
-            $valuePropertyId = $valueEntity->getProperty()->getId();
-            if (!in_array($valuePropertyId, $inversePropertyIds)) {
+            $propertyId = $valueEntity->getProperty()->getId();
+            if (!in_array($propertyId, $inversePropertyIds)) {
                 // This property has no inverse.
                 continue;
             }
             // This is a resource value with an inverse property.
-            $valueResourceEntity = $valueEntity->valueResource();
+            $valueResourceEntity = $valueEntity->getValueResource();
 
-            // @todo: get the valueResource's values and check if the
-            // inverse exists. If it doesn't, create it.
+            foreach ($propertyInverses[$propertyId] as $inversePropertyId) {
+                // @todo: Does the $valueResourceEntity have a resource value
+                // with the inverse property ID? If not, create it using INSERT.
+            }
         }
     }
 }
