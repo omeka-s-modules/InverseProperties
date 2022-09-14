@@ -15,35 +15,38 @@ class IndexController extends AbstractActionController
         $this->inverseProperties = $inverseProperties;
     }
 
-    public function indexAction()
+    public function resourceTemplatesAction()
     {
-        // Must use a generic form to get CSRF protection.
+        $resourceTemplates = $this->api()->search('resource_templates', ['sort_by' => 'label'])->getContent();
+
+        $view = new ViewModel;
+        $view->setVariable('resourceTemplates', $resourceTemplates);
+        return $view;
+    }
+
+    public function propertiesAction()
+    {
+        $resourceTemplateId = $this->params('resource-template-id');
+        $resourceTemplate = $this->api()->read('resource_templates', $resourceTemplateId)->getContent();
+
+        // Must use a generic form for CSRF protection.
         $form = $this->getForm(Form::class);
 
         if ($this->getRequest()->isPost()) {
+            echo '<pre>';print_r($this->params()->fromPost());exit;
             $form->setData($this->params()->fromPost());
             if ($form->isValid()) {
-                $propertyPairs = $this->params()->fromPost('property_pairs', []);
-                $this->inverseProperties->setPropertyPairs($propertyPairs);
-                $this->messenger()->addSuccess('Property pairs successfully updated'); // @translate
+                // @todo: save data
+                $this->messenger()->addSuccess('Inverse properties successfully updated'); // @translate
                 return $this->redirect()->toRoute();
             } else {
                 $this->messenger()->addFormErrors($form);
             }
         }
 
-        // Transform property pair entities to their property IDs.
-        $propertyPairs = [];
-        foreach ($this->inverseProperties->getPropertyPairs() as $propertyPairEntity) {
-            $propertyPairs[] = [
-                'p1' => $propertyPairEntity->getP1()->getId(),
-                'p2' => $propertyPairEntity->getP2()->getId(),
-            ];
-        }
-
         $view = new ViewModel;
         $view->setVariable('form', $form);
-        $view->setVariable('propertyPairs', $propertyPairs);
+        $view->setVariable('resourceTemplate', $resourceTemplate);
         return $view;
     }
 }

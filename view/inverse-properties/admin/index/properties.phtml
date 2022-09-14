@@ -1,0 +1,43 @@
+<?php
+$this->htmlElement('body')->appendAttribute('class', ' inverse-properties');
+?>
+
+<?php echo $this->pageTitle($this->translate('Properties'), 1, $this->translate('Inverse properties'), $resourceTemplate->label()); ?>
+
+<?php echo $this->form()->openTag($form); ?>
+<?php echo $this->formElement($form->get('form_csrf')); ?>
+
+<div id="page-actions">
+    <a class="button" href="<?php echo $this->escapeHtml($this->url('admin/inverse-properties', [], true)); ?>"><?php echo $this->translate('Cancel'); ?></a>
+    <input type="submit" value="<?php echo $this->escapeHtml($this->translate('Submit')); ?>">
+</div>
+
+<table class="tablesaw batch-edit" data-tablesaw-mode="stack">
+    <thead>
+        <tr>
+            <th><?php echo $this->translate('Property'); ?></th>
+            <th><?php echo $this->translate('Alternate label'); ?></th>
+            <th><?php echo $this->translate('Inverse property'); ?></th>
+        </tr>
+    </thead>
+    <tbody>
+        <?php foreach ($resourceTemplate->resourceTemplateProperties() as $resourceTemplateProperty): ?>
+        <tr>
+            <td><?php echo $resourceTemplateProperty->property()->label(); ?></td>
+            <td><?php echo $resourceTemplateProperty->alternateLabel(); ?></td>
+            <td><?php echo $this->propertySelect([
+                'name' => sprintf('inverse_property[%s]', $resourceTemplateProperty->property()->id()),
+                'options' => [
+                    'empty_option' => ''
+                ],
+                'attributes' => [
+                    'class' => 'chosen-select',
+                    'data-placeholder' => 'Select property…', // @translate
+                ],
+            ]); ?></td>
+        </tr>
+        <?php endforeach; ?>
+    </tbody>
+</table>
+
+<?php echo $this->form()->closeTag(); ?>

@@ -1,0 +1,28 @@
+<?php
+$this->htmlElement('body')->appendAttribute('class', 'browse inverse-properties');
+?>
+
+<?php echo $this->pageTitle($this->translate('Resource templates'), 1, $this->translate('Inverse properties')); ?>
+
+<table class="tablesaw batch-edit" data-tablesaw-mode="stack">
+    <thead>
+        <tr>
+            <th><?php echo $this->translate('Label'); ?></th>
+            <th><?php echo $this->translate('Owner'); ?></th>
+        </tr>
+    </thead>
+    <tbody>
+        <?php foreach ($resourceTemplates as $resourceTemplate): ?>
+        <?php $owner = $resourceTemplate->owner(); ?>
+        <tr>
+            <td>
+                <?php echo $resourceTemplate->label(); ?>
+                <ul class="actions">
+                    <li><?php echo $this->hyperlink('', $this->url('admin/inverse-properties/resource-template-id', ['resource-template-id' => $resourceTemplate->id()], true), ['class' => 'o-icon-edit']); ?></li>
+                </ul>
+            </td>
+            <td><?php echo $owner ? $this->hyperlink($owner->name(), $this->url('admin/id', ['controller' => 'user', 'action' => 'show', 'id' => $owner->id()])) : $this->translate('[No owner]'); ?></td>
+        </tr>
+        <?php endforeach; ?>
+    </tbody>
+</table>

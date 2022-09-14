@@ -17,15 +17,16 @@ class Module extends AbstractModule
     public function install(ServiceLocatorInterface $services)
     {
         $conn = $services->get('Omeka\Connection');
-        $conn->exec('CREATE TABLE inverse_properties_property_pair (id INT UNSIGNED AUTO_INCREMENT NOT NULL, p1_id INT NOT NULL, p2_id INT NOT NULL, INDEX IDX_A0057456EE679434 (p1_id), INDEX IDX_A0057456FCD23BDA (p2_id), PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB;');
-        $conn->exec('ALTER TABLE inverse_properties_property_pair ADD CONSTRAINT FK_A0057456EE679434 FOREIGN KEY (p1_id) REFERENCES property (id) ON DELETE CASCADE;');
-        $conn->exec('ALTER TABLE inverse_properties_property_pair ADD CONSTRAINT FK_A0057456FCD23BDA FOREIGN KEY (p2_id) REFERENCES property (id) ON DELETE CASCADE;');
-    }
+        $conn->exec('CREATE TABLE inverse_properties_inverse_property (id INT UNSIGNED AUTO_INCREMENT NOT NULL, resource_template_id INT NOT NULL, resource_template_property_id INT NOT NULL, inverse_property_id INT NOT NULL, INDEX IDX_6FC58AAD16131EA (resource_template_id), INDEX IDX_6FC58AAD2A6B767B (resource_template_property_id), INDEX IDX_6FC58AAD4B4BCE2E (inverse_property_id), PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB;');
+        $conn->exec('ALTER TABLE inverse_properties_inverse_property ADD CONSTRAINT FK_6FC58AAD16131EA FOREIGN KEY (resource_template_id) REFERENCES resource_template (id) ON DELETE CASCADE;');
+        $conn->exec('ALTER TABLE inverse_properties_inverse_property ADD CONSTRAINT FK_6FC58AAD2A6B767B FOREIGN KEY (resource_template_property_id) REFERENCES resource_template_property (id) ON DELETE CASCADE;');
+        $conn->exec('ALTER TABLE inverse_properties_inverse_property ADD CONSTRAINT FK_6FC58AAD4B4BCE2E FOREIGN KEY (inverse_property_id) REFERENCES property (id) ON DELETE CASCADE;');
+   }
 
     public function uninstall(ServiceLocatorInterface $services)
     {
         $conn = $services->get('Omeka\Connection');
-        $conn->exec('DROP TABLE IF EXISTS inverse_properties_property_pair;');
+        $conn->exec('DROP TABLE IF EXISTS inverse_properties_inverse_property;');
     }
 
     public function attachListeners(SharedEventManagerInterface $sharedEventManager)

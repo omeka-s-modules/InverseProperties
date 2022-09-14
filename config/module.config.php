@@ -55,14 +55,26 @@ return [
                     'inverse-properties' => [
                         'type' => Http\Segment::class,
                         'options' => [
-                            'route' => '/inverse-properties[/:action]',
-                            'constraints' => [
-                                'action' => '[a-zA-Z][a-zA-Z0-9_-]*',
-                            ],
+                            'route' => '/inverse-properties/resource-template',
                             'defaults' => [
                                 '__NAMESPACE__' => 'InverseProperties\Controller\Admin',
                                 'controller' => 'index',
-                                'action' => 'index',
+                                'action' => 'resource-templates',
+                            ],
+                        ],
+                        'may_terminate' => true,
+                        'child_routes' => [
+                            'resource-template-id' => [
+                                'type' => Http\Segment::class,
+                                'options' => [
+                                    'route' => '/:resource-template-id',
+                                    'constraints' => [
+                                        'resource-template-id' => '\d+',
+                                    ],
+                                    'defaults' => [
+                                        'action' => 'properties',
+                                    ],
+                                ],
                             ],
                         ],
                     ],
