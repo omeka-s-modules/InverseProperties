@@ -110,15 +110,18 @@ class InverseProperties
             return;
         }
         $inversePropertyIds = [];
+        $properties = [];
         foreach ($inverses as $inverse) {
-            $propertyId = $inverse->getResourceTemplateProperty()->getProperty()->getId();
-            $inversePropertyId = $inverse->getInverseProperty()->getId();
-            $inversePropertyIds[$propertyId] = $inversePropertyId;
+            $property = $inverse->getResourceTemplateProperty()->getProperty();
+            $inverseProperty = $inverse->getInverseProperty();
+            $inversePropertyIds[$property->getId()] = $inverseProperty->getId();
+            $properties[$property->getId()] = $property;
+            $properties[$inverseProperty->getId()] = $inverseProperty;
         }
         $resourceDataTypes = ['resource', 'resource:item', 'resource:itemset', 'resource:media'];
         // Iterate this resource's values.
         foreach ($resource->getValues() as $value) {
-            $valueDataType = $valueEntity->getType();
+            $valueDataType = $value->getType();
             if (!in_array($valueDataType, $resourceDataTypes)) {
                 // This is not a resource data type.
                 continue;
@@ -128,11 +131,35 @@ class InverseProperties
                 // This property has no inverse.
                 continue;
             }
-            // This is a resource value with an inverse property.
-            $valueResource = $value->getValueResource();
-
-            // @todo: If the $valueResource does not already have a resource
-            // value with the inverse property, create it.
+            // This is a resource value with an inverse property. Now determine
+            // whether the resource value already has the inverse value.
+            $hasInverse = false;
+            foreach ($value->getValueResource()->getValues() as $resourceValue) {
+                $resourceValueDataType = $resourceValue->getType();
+                if (!in_array($resourceValueDataType, $resourceDataTypes)) {
+                    // This is not a resource data type.
+                    continue;
+                }
+                $resourceValuePropertyId = $resourceValue->getProperty()->getId();
+                if ($resourceValuePropertyId !== $inversePropertyIds[$valuePropertyId]) {
+                    // This property is not the inverse.
+                    continue;
+                }
+                // This resource value already has the inverse value.
+                $hasInverse = true;
+                break;
+            }
+            if (!$hasInverse) {
+                // An inverse value does not exist. Create it.
+                $inverseProperty = $properties[$inversePropertyIds[$valuePropertyId]];
+                $inverseValue = new Entity\Value;
+                $inverseValue->setResource($value->getValueResource());
+                $inverseValue->setProperty($inverseProperty);
+                $inverseValue->setType('resource');
+                $inverseValue->setValueResource($value->getResource());
+                $this->entityManager->persist($inverseValue);
+            }
         }
+        $this->entityManager->flush();
     }
 }
