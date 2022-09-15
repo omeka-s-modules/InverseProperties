@@ -27,18 +27,25 @@ class IndexController extends AbstractActionController
     public function propertiesAction()
     {
         $resourceTemplateId = $this->params('resource-template-id');
-        $resourceTemplate = $this->api()->read('resource_templates', $resourceTemplateId)->getContent();
+        $resourceTemplate = $this->inverseProperties->getEntity('Omeka\Entity\ResourceTemplate', $resourceTemplateId);
+        $inverseProperties = $this->inverseProperties->getInverseProperties($resourceTemplateId);
+        $inversePropertyIds = [];
+        foreach ($inverseProperties as $inverseProperty) {
+            $resourceTemplatePropertyId = $inverseProperty->getResourceTemplateProperty()->getId();
+            $propertyId = $inverseProperty->getProperty()->getId();
+            $inversePropertyIds[$resourceTemplatePropertyId] = $propertyId;
+        }
 
         // Must use a generic form for CSRF protection.
         $form = $this->getForm(Form::class);
 
         if ($this->getRequest()->isPost()) {
-            echo '<pre>';print_r($this->params()->fromPost());exit;
             $form->setData($this->params()->fromPost());
+            $inversePropertyIds = $this->params()->fromPost('inverse_property_ids', []);
             if ($form->isValid()) {
-                // @todo: save data
+                $this->inverseProperties->setInverseProperties($resourceTemplateId, $inversePropertyIds);
                 $this->messenger()->addSuccess('Inverse properties successfully updated'); // @translate
-                return $this->redirect()->toRoute();
+                return $this->redirect()->toRoute(null, [], true);
             } else {
                 $this->messenger()->addFormErrors($form);
             }
@@ -47,6 +54,7 @@ class IndexController extends AbstractActionController
         $view = new ViewModel;
         $view->setVariable('form', $form);
         $view->setVariable('resourceTemplate', $resourceTemplate);
+        $view->setVariable('inversePropertyIds', $inversePropertyIds);
         return $view;
     }
 }

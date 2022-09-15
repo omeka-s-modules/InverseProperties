@@ -8,6 +8,13 @@ use Omeka\Entity\ResourceTemplateProperty;
 
 /**
  * @Entity
+ * @Table(
+ *     uniqueConstraints={
+ *         @UniqueConstraint(
+ *             columns={"resource_template_id", "resource_template_property_id"}
+ *         ),
+ *     }
+ * )
  */
 class InversePropertiesInverseProperty extends AbstractEntity
 {
@@ -79,15 +86,15 @@ class InversePropertiesInverseProperty extends AbstractEntity
      *     onDelete="CASCADE"
      * )
      */
-    protected $inverseProperty;
+    protected $property;
 
-    public function setInverseProperty(Property $inverseProperty) : void
+    public function setProperty(Property $property) : void
     {
-        $this->inverseProperty = $inverseProperty;
+        $this->property = $property;
     }
 
-    public function getInverseProperty() : Property
+    public function getProperty() : Property
     {
-        return $this->inverseProperty;
+        return $this->property;
     }
 }

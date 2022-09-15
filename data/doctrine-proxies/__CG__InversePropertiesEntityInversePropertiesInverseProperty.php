@@ -67,10 +67,10 @@ class InversePropertiesInverseProperty extends \InverseProperties\Entity\Inverse
     public function __sleep()
     {
         if ($this->__isInitialized__) {
-            return ['__isInitialized__', 'id', 'resourceTemplate', 'resourceTemplateProperty', 'inverseProperty'];
+            return ['__isInitialized__', 'id', 'resourceTemplate', 'resourceTemplateProperty', 'property'];
         }
 
-        return ['__isInitialized__', 'id', 'resourceTemplate', 'resourceTemplateProperty', 'inverseProperty'];
+        return ['__isInitialized__', 'id', 'resourceTemplate', 'resourceTemplateProperty', 'property'];
     }
 
     /**
@@ -239,23 +239,23 @@ class InversePropertiesInverseProperty extends \InverseProperties\Entity\Inverse
     /**
      * {@inheritDoc}
      */
-    public function setInverseProperty(\Omeka\Entity\Property $inverseProperty): void
+    public function setProperty(\Omeka\Entity\Property $property): void
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setInverseProperty', [$inverseProperty]);
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setProperty', [$property]);
 
-        parent::setInverseProperty($inverseProperty);
+        parent::setProperty($property);
     }
 
     /**
      * {@inheritDoc}
      */
-    public function getInverseProperty(): \Omeka\Entity\Property
+    public function getProperty(): \Omeka\Entity\Property
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getInverseProperty', []);
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getProperty', []);
 
-        return parent::getInverseProperty();
+        return parent::getProperty();
     }
 
     /**

@@ -2,7 +2,7 @@
 $this->htmlElement('body')->appendAttribute('class', ' inverse-properties');
 ?>
 
-<?php echo $this->pageTitle($this->translate('Properties'), 1, $this->translate('Inverse properties'), $resourceTemplate->label()); ?>
+<?php echo $this->pageTitle($this->translate('Properties'), 1, $this->translate('Inverse properties'), $resourceTemplate->getLabel()); ?>
 
 <?php echo $this->form()->openTag($form); ?>
 <?php echo $this->formElement($form->get('form_csrf')); ?>
@@ -21,18 +21,19 @@ $this->htmlElement('body')->appendAttribute('class', ' inverse-properties');
         </tr>
     </thead>
     <tbody>
-        <?php foreach ($resourceTemplate->resourceTemplateProperties() as $resourceTemplateProperty): ?>
+        <?php foreach ($resourceTemplate->getResourceTemplateProperties() as $resourceTemplateProperty): ?>
         <tr>
-            <td><?php echo $resourceTemplateProperty->property()->label(); ?></td>
-            <td><?php echo $resourceTemplateProperty->alternateLabel(); ?></td>
+            <td><?php echo $resourceTemplateProperty->getProperty()->getLabel(); ?></td>
+            <td><?php echo $resourceTemplateProperty->getAlternateLabel(); ?></td>
             <td><?php echo $this->propertySelect([
-                'name' => sprintf('inverse_property[%s]', $resourceTemplateProperty->property()->id()),
+                'name' => sprintf('inverse_property_ids[%s]', $resourceTemplateProperty->getId()),
                 'options' => [
                     'empty_option' => ''
                 ],
                 'attributes' => [
                     'class' => 'chosen-select',
                     'data-placeholder' => 'Select property…', // @translate
+                    'value' => $inversePropertyIds[$resourceTemplateProperty->getId()] ?? '',
                 ],
             ]); ?></td>
         </tr>
