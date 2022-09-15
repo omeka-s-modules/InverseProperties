@@ -16,7 +16,7 @@ use Omeka\Entity\ResourceTemplateProperty;
  *     }
  * )
  */
-class InversePropertiesInverseProperty extends AbstractEntity
+class InversePropertiesInverse extends AbstractEntity
 {
     /**
      * @Id
@@ -86,15 +86,15 @@ class InversePropertiesInverseProperty extends AbstractEntity
      *     onDelete="CASCADE"
      * )
      */
-    protected $property;
+    protected $inverseProperty;
 
-    public function setProperty(Property $property) : void
+    public function setInverseProperty(Property $inverseProperty) : void
     {
-        $this->property = $property;
+        $this->inverseProperty = $inverseProperty;
     }
 
-    public function getProperty() : Property
+    public function getInverseProperty() : Property
     {
-        return $this->property;
+        return $this->inverseProperty;
     }
 }

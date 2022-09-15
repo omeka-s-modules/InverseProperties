@@ -2,7 +2,7 @@
 namespace InverseProperties\Stdlib;
 
 use Omeka\Entity;
-use InverseProperties\Entity\InversePropertiesInverseProperty;
+use InverseProperties\Entity\InversePropertiesInverse;
 use Zend\ServiceManager\ServiceLocatorInterface;
 
 class InverseProperties
@@ -26,12 +26,12 @@ class InverseProperties
     }
 
     /**
-     * Get inverse properties for a resource template.
+     * Get inverse entities for a resource template.
      */
-    public function getInverseProperties(int $resourceTemplateId) : array
+    public function getInverses(int $resourceTemplateId) : array
     {
         return $this->entityManager
-            ->getRepository('InverseProperties\Entity\InversePropertiesInverseProperty')
+            ->getRepository('InverseProperties\Entity\InversePropertiesInverse')
             ->findBy(['resourceTemplate' => $resourceTemplateId]);
     }
 
@@ -45,52 +45,51 @@ class InverseProperties
             // This resource template does not exist.
             return;
         }
-        // We must set a nonexistent ID (0) or no existing inverse properties
-        // will be deleted if the user deletes all inverse properties in the UI.
+        // We must set a nonexistent ID (0) or no existing inverses will be
+        // deleted if the user unsets all inverse properties in the UI.
         $retainIds = [0];
-        foreach ($inversePropertyIds as $resourceTemplatePropertyId => $propertyId) {
-            if (!(is_numeric($resourceTemplatePropertyId) && is_numeric($propertyId))) {
+        foreach ($inversePropertyIds as $resourceTemplatePropertyId => $inversePropertyId) {
+            if (!(is_numeric($resourceTemplatePropertyId) && is_numeric($inversePropertyId))) {
                 // Invalid format.
                 continue;
             }
-            $resourceTemplateProperty = $this->entityManager->find('Omeka\Entity\ResourceTemplateProperty', $resourceTemplatePropertyId);
+            $resourceTemplateProperty = $this->getEntity('Omeka\Entity\ResourceTemplateProperty', $resourceTemplatePropertyId);
             if (!$resourceTemplateProperty) {
                 // This resource template property does not exist.
                 continue;
             }
-            $property = $this->getEntity('Omeka\Entity\Property', $propertyId);
-            if (!$property) {
+            $inverseProperty = $this->getEntity('Omeka\Entity\Property', $inversePropertyId);
+            if (!$inverseProperty) {
                 // This property does not exist.
                 continue;
             }
-            if ($resourceTemplateProperty->getProperty()->getId() === $property->getId()) {
+            if ($resourceTemplateProperty->getProperty()->getId() === $inverseProperty->getId()) {
                 // A property cannot be an inverse of itself.
                 continue;
             }
-            $inverseProperty = $this->entityManager
-                ->getRepository('InverseProperties\Entity\InversePropertiesInverseProperty')
+            $inverse = $this->entityManager
+                ->getRepository('InverseProperties\Entity\InversePropertiesInverse')
                 ->findOneBy(['resourceTemplateProperty' => $resourceTemplateProperty]);
-            if ($inverseProperty) {
-                // This inverse property already exists.
-                $inverseProperty->setProperty($property);
-                $retainIds[] = $inverseProperty->getId();
+            if ($inverse) {
+                // This inverse already exists.
+                $inverse->setInverseProperty($inverseProperty);
             } else {
-                // This inverse property does not exist. Create it.
-                $inverseProperty = new InversePropertiesInverseProperty;
-                $inverseProperty->setResourceTemplate($resourceTemplate);
-                $inverseProperty->setResourceTemplateProperty($resourceTemplateProperty);
-                $inverseProperty->setProperty($property);
-                $this->entityManager->persist($inverseProperty);
-                // Must flush here so Doctrine generates the ID.
-                $this->entityManager->flush();
-                $retainIds[] = $inverseProperty->getId();
+                // This inverse does not exist. Create it.
+                $inverse = new InversePropertiesInverse;
+                $inverse->setResourceTemplate($resourceTemplate);
+                $inverse->setResourceTemplateProperty($resourceTemplateProperty);
+                $inverse->setInverseProperty($inverseProperty);
+                $this->entityManager->persist($inverse);
             }
+            // Must flush here so Doctrine generates the ID.
+            $this->entityManager->flush();
+            $retainIds[] = $inverse->getId();
         }
         // Delete all inverse properties that did not already exist and weren't
         // newly created above.
-        $dqlDelete = 'DELETE FROM InverseProperties\Entity\InversePropertiesInverseProperty ip WHERE ip.id NOT IN (:ids)';
+        $dql = 'DELETE FROM InverseProperties\Entity\InversePropertiesInverse i WHERE i.id NOT IN (:ids)';
         $this->entityManager
-            ->createQuery($dqlDelete)
+            ->createQuery($dql)
             ->setParameter('ids', $retainIds)
             ->execute();
     }
@@ -98,7 +97,42 @@ class InverseProperties
     /**
      * Set inverse property values for a resource entity.
      */
-    public function setInversePropertyValues(Entity\Resource $resourceEntity) : void
+    public function setInversePropertyValues(Entity\Resource $resource) : void
     {
+        $resourceTemplate = $resource->getResourceTemplate();
+        if (!$resourceTemplate) {
+            // This resource has no resource template.
+            return;
+        }
+        $inverses = $this->getInverses($resourceTemplate->getId());
+        if (!$inverses) {
+            // This resource template has no inverses.
+            return;
+        }
+        $inversePropertyIds = [];
+        foreach ($inverses as $inverse) {
+            $propertyId = $inverse->getResourceTemplateProperty()->getProperty()->getId();
+            $inversePropertyId = $inverse->getInverseProperty()->getId();
+            $inversePropertyIds[$propertyId] = $inversePropertyId;
+        }
+        $resourceDataTypes = ['resource', 'resource:item', 'resource:itemset', 'resource:media'];
+        // Iterate this resource's values.
+        foreach ($resource->getValues() as $value) {
+            $valueDataType = $valueEntity->getType();
+            if (!in_array($valueDataType, $resourceDataTypes)) {
+                // This is not a resource data type.
+                continue;
+            }
+            $valuePropertyId = $value->getProperty()->getId();
+            if (!array_key_exists($valuePropertyId, $inversePropertyIds)) {
+                // This property has no inverse.
+                continue;
+            }
+            // This is a resource value with an inverse property.
+            $valueResource = $value->getValueResource();
+
+            // @todo: If the $valueResource does not already have a resource
+            // value with the inverse property, create it.
+        }
     }
 }
