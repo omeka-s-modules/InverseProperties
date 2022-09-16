@@ -29,11 +29,13 @@ class IndexController extends AbstractActionController
         $resourceTemplateId = $this->params('resource-template-id');
         $resourceTemplate = $this->inverseProperties->getEntity('Omeka\Entity\ResourceTemplate', $resourceTemplateId);
         $inverses = $this->inverseProperties->getInverses($resourceTemplateId);
+
+        // Cache the resource template property ID / inverse property ID pairs.
         $inversePropertyIds = [];
         foreach ($inverses as $inverse) {
-            $resourceTemplatePropertyId = $inverse->getResourceTemplateProperty()->getId();
-            $inversePropertyId = $inverse->getInverseProperty()->getId();
-            $inversePropertyIds[$resourceTemplatePropertyId] = $inversePropertyId;
+            $resourceTemplateProperty = $inverse->getResourceTemplateProperty();
+            $inverseProperty = $inverse->getInverseProperty();
+            $inversePropertyIds[$resourceTemplateProperty->getId()] = $inverseProperty->getId();
         }
 
         // Must use a generic form for CSRF protection.

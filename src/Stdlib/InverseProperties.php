@@ -109,14 +109,16 @@ class InverseProperties
             // This resource template has no inverses.
             return;
         }
-        $inversePropertyIds = [];
+        // Cache the a) property entities and b) property ID / inverse property
+        // ID pairs.
         $properties = [];
+        $inversePropertyIds = [];
         foreach ($inverses as $inverse) {
             $property = $inverse->getResourceTemplateProperty()->getProperty();
             $inverseProperty = $inverse->getInverseProperty();
-            $inversePropertyIds[$property->getId()] = $inverseProperty->getId();
             $properties[$property->getId()] = $property;
             $properties[$inverseProperty->getId()] = $inverseProperty;
+            $inversePropertyIds[$property->getId()] = $inverseProperty->getId();
         }
         $resourceDataTypes = ['resource', 'resource:item', 'resource:itemset', 'resource:media'];
         // Iterate this resource's values.
@@ -149,16 +151,18 @@ class InverseProperties
                 $hasInverse = true;
                 break;
             }
-            if (!$hasInverse) {
-                // An inverse value does not exist. Create it.
-                $inverseProperty = $properties[$inversePropertyIds[$valuePropertyId]];
-                $inverseValue = new Entity\Value;
-                $inverseValue->setResource($value->getValueResource());
-                $inverseValue->setProperty($inverseProperty);
-                $inverseValue->setType('resource');
-                $inverseValue->setValueResource($value->getResource());
-                $this->entityManager->persist($inverseValue);
+            if ($hasInverse) {
+                // An inverse value already exists.
+                continue;
             }
+            // An inverse value does not exist. Create it.
+            $inverseProperty = $properties[$inversePropertyIds[$valuePropertyId]];
+            $inverseValue = new Entity\Value;
+            $inverseValue->setResource($value->getValueResource());
+            $inverseValue->setProperty($inverseProperty);
+            $inverseValue->setType('resource');
+            $inverseValue->setValueResource($value->getResource());
+            $this->entityManager->persist($inverseValue);
         }
         $this->entityManager->flush();
     }
