@@ -18,7 +18,9 @@ $this->htmlElement('body')->appendAttribute('class', 'browse inverse-properties'
             <td>
                 <?php echo $resourceTemplate->label(); ?>
                 <ul class="actions">
+                    <?php if ($resourceTemplate->userIsAllowed('update')): ?>
                     <li><?php echo $this->hyperlink('', $this->url('admin/inverse-properties/resource-template-id', ['resource-template-id' => $resourceTemplate->id()], true), ['class' => 'o-icon-edit']); ?></li>
+                    <?php endif; ?>
                 </ul>
             </td>
             <td><?php echo $owner ? $this->hyperlink($owner->name(), $this->url('admin/id', ['controller' => 'user', 'action' => 'show', 'id' => $owner->id()])) : $this->translate('[No owner]'); ?></td>

@@ -14,6 +14,14 @@ class Module extends AbstractModule
         return include sprintf('%s/config/module.config.php', __DIR__);
     }
 
+    public function onBootstrap(MvcEvent $event)
+    {
+        parent::onBootstrap($event);
+
+        $acl = $this->getServiceLocator()->get('Omeka\Acl');
+        $acl->allow(null, 'InverseProperties\Controller\Admin\Index');
+    }
+
     public function install(ServiceLocatorInterface $services)
     {
         $conn = $services->get('Omeka\Connection');
