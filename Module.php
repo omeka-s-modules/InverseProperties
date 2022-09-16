@@ -19,7 +19,13 @@ class Module extends AbstractModule
         parent::onBootstrap($event);
 
         $acl = $this->getServiceLocator()->get('Omeka\Acl');
-        $acl->allow(null, 'InverseProperties\Controller\Admin\Index');
+        $acl->allow(
+            null,
+            [
+                'InverseProperties\Controller\Admin\Index',
+                'InverseProperties\Controller\Admin\ResourceTemplate',
+            ]
+        );
     }
 
     public function install(ServiceLocatorInterface $services)

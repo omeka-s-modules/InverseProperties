@@ -1,0 +1,39 @@
+<?php
+$this->htmlElement('body')->appendAttribute('class', 'inverse-properties');
+?>
+
+<?php echo $this->pageTitle($this->translate('Properties'), 1, $this->translate('Inverse properties'), $resourceTemplate->getLabel()); ?>
+
+<div id="page-actions">
+    <a class="button" href="<?php echo $this->escapeHtml($this->url('admin/inverse-properties-resource-template', ['action' => 'browse'], true)); ?>"><?php echo $this->translate('Go to resource templates'); ?></a>
+    <?php if ($this->userIsAllowed($resourceTemplate, 'update')): ?>
+    <a class="button" href="<?php echo $this->escapeHtml($this->url(null, ['action' => 'edit'], true)); ?>"><?php echo $this->translate('Edit'); ?></a>
+    <?php endif ?>
+</div>
+
+<table class="tablesaw batch-edit" data-tablesaw-mode="stack">
+    <thead>
+        <tr>
+            <th><?php echo $this->translate('Property'); ?></th>
+            <th><?php echo $this->translate('Property term'); ?></th>
+            <th><?php echo $this->translate('Alternate label'); ?></th>
+            <th><?php echo $this->translate('Inverse property'); ?></th>
+            <th><?php echo $this->translate('Inverse property term'); ?></th>
+        </tr>
+    </thead>
+    <tbody>
+        <?php foreach ($resourceTemplate->getResourceTemplateProperties() as $resourceTemplateProperty): ?>
+        <?php
+        $property = $resourceTemplateProperty->getProperty();
+        $inverseProperty = $inverseProperties[$resourceTemplateProperty->getId()] ?? null;
+        ?>
+        <tr>
+            <td><?php echo $property->getLabel(); ?></td>
+            <td><?php echo sprintf('%s:%s', $property->getVocabulary()->getPrefix(), $property->getLocalName()); ?></td>
+            <td><?php echo $resourceTemplateProperty->getAlternateLabel(); ?></td>
+            <td><?php echo $inverseProperty ? $inverseProperty->getLabel() : ''; ?></td>
+            <td><?php echo $inverseProperty ? sprintf('%s:%s', $inverseProperty->getVocabulary()->getPrefix(), $inverseProperty->getLocalName()) : ''; ?></td>
+        </tr>
+        <?php endforeach; ?>
+    </tbody>
+</table>

@@ -32,8 +32,11 @@ return [
         ],
     ],
     'controllers' => [
+        'invokables' => [
+            'InverseProperties\Controller\Admin\Index' => Controller\Admin\IndexController::class,
+        ],
         'factories' => [
-            'InverseProperties\Controller\Admin\Index' => Service\Controller\Admin\IndexControllerFactory::class,
+            'InverseProperties\Controller\Admin\ResourceTemplate' => Service\Controller\Admin\ResourceTemplateControllerFactory::class,
         ],
     ],
     'navigation' => [
@@ -45,6 +48,16 @@ return [
                 'action' => 'index',
                 'resource' => 'InverseProperties\Controller\Admin\Index',
                 'useRouteMatch' => true,
+                'pages' => [
+                    [
+                        'route' => 'admin/inverse-properties-resource-template',
+                        'visible' => false,
+                    ],
+                    [
+                        'route' => 'admin/inverse-properties-resource-template/id',
+                        'visible' => false,
+                    ],
+                ],
             ],
         ],
     ],
@@ -53,26 +66,37 @@ return [
             'admin' => [
                 'child_routes' => [
                     'inverse-properties' => [
-                        'type' => Http\Segment::class,
+                        'type' => Http\Literal::class,
                         'options' => [
-                            'route' => '/inverse-properties/resource-template',
+                            'route' => '/inverse-properties',
                             'defaults' => [
                                 '__NAMESPACE__' => 'InverseProperties\Controller\Admin',
                                 'controller' => 'index',
-                                'action' => 'resource-templates',
+                                'action' => 'index',
+                            ],
+                        ],
+                    ],
+                    'inverse-properties-resource-template' => [
+                        'type' => Http\Segment::class,
+                        'options' => [
+                            'route' => '/inverse-properties/resource-template/:action',
+                            'constraints' => [
+                                'action' => '[a-zA-Z][a-zA-Z0-9_-]*',
+                            ],
+                            'defaults' => [
+                                '__NAMESPACE__' => 'InverseProperties\Controller\Admin',
+                                'controller' => 'resource-template',
+                                'action' => 'browse',
                             ],
                         ],
                         'may_terminate' => true,
                         'child_routes' => [
-                            'resource-template-id' => [
+                            'id' => [
                                 'type' => Http\Segment::class,
                                 'options' => [
-                                    'route' => '/:resource-template-id',
+                                    'route' => '/:id',
                                     'constraints' => [
-                                        'resource-template-id' => '\d+',
-                                    ],
-                                    'defaults' => [
-                                        'action' => 'properties',
+                                        'id' => '\d+',
                                     ],
                                 ],
                             ],

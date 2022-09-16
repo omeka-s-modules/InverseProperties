@@ -87,9 +87,12 @@ class InverseProperties
         }
         // Delete all inverse properties that did not already exist and weren't
         // newly created above.
-        $dql = 'DELETE FROM InverseProperties\Entity\InversePropertiesInverse i WHERE i.id NOT IN (:ids)';
+        $dql = 'DELETE FROM InverseProperties\Entity\InversePropertiesInverse i
+        WHERE i.resourceTemplate = :resourceTemplate
+        AND i.id NOT IN (:ids)';
         $this->entityManager
             ->createQuery($dql)
+            ->setParameter('resourceTemplate', $resourceTemplate)
             ->setParameter('ids', $retainIds)
             ->execute();
     }

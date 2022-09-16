@@ -16,10 +16,10 @@ $this->htmlElement('body')->appendAttribute('class', 'browse inverse-properties'
         <?php $owner = $resourceTemplate->owner(); ?>
         <tr>
             <td>
-                <?php echo $resourceTemplate->label(); ?>
+                <?php echo $this->hyperlink($resourceTemplate->label(), $this->url('admin/inverse-properties-resource-template/id', ['action' => 'show', 'id' => $resourceTemplate->id()], true)); ?>
                 <ul class="actions">
                     <?php if ($resourceTemplate->userIsAllowed('update')): ?>
-                    <li><?php echo $this->hyperlink('', $this->url('admin/inverse-properties/resource-template-id', ['resource-template-id' => $resourceTemplate->id()], true), ['class' => 'o-icon-edit']); ?></li>
+                    <li><?php echo $this->hyperlink('', $this->url('admin/inverse-properties-resource-template/id', ['action' => 'edit', 'id' => $resourceTemplate->id()], true), ['class' => 'o-icon-edit']); ?></li>
                     <?php endif; ?>
                 </ul>
             </td>
