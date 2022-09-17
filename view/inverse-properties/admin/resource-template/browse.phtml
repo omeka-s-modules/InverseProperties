@@ -1,8 +1,13 @@
 <?php
+$this->headLink()->appendStylesheet($this->assetUrl('css/admin/inverse-properties.css', 'InverseProperties'));
 $this->htmlElement('body')->appendAttribute('class', 'browse inverse-properties');
 ?>
 
 <?php echo $this->pageTitle($this->translate('Resource templates'), 1, $this->translate('Inverse properties')); ?>
+
+<div class="breadcrumbs">
+    <?php echo $this->translate('Resource templates'); ?>
+</div>
 
 <table class="tablesaw batch-edit" data-tablesaw-mode="stack">
     <thead>

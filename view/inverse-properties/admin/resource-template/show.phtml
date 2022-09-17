@@ -1,14 +1,20 @@
 <?php
+$this->headLink()->appendStylesheet($this->assetUrl('css/admin/inverse-properties.css', 'InverseProperties'));
 $this->htmlElement('body')->appendAttribute('class', 'inverse-properties');
 ?>
 
 <?php echo $this->pageTitle($this->translate('Properties'), 1, $this->translate('Inverse properties'), $resourceTemplate->getLabel()); ?>
 
 <div id="page-actions">
-    <a class="button" href="<?php echo $this->escapeHtml($this->url('admin/inverse-properties-resource-template', ['action' => 'browse'], true)); ?>"><?php echo $this->translate('Go to resource templates'); ?></a>
     <?php if ($this->userIsAllowed($resourceTemplate, 'update')): ?>
     <a class="button" href="<?php echo $this->escapeHtml($this->url(null, ['action' => 'edit'], true)); ?>"><?php echo $this->translate('Edit'); ?></a>
     <?php endif ?>
+</div>
+
+<div class="breadcrumbs">
+    <?php echo $this->hyperlink($this->translate('Resource templates'), $this->url('admin/inverse-properties-resource-template')); ?>
+    <span class="separator"></span>
+    <?php echo $this->translate('Properties'); ?>
 </div>
 
 <table class="tablesaw batch-edit" data-tablesaw-mode="stack">
