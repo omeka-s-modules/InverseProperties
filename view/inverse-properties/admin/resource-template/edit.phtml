@@ -16,9 +16,8 @@ $this->htmlElement('body')->appendAttribute('class', ' inverse-properties');
     <thead>
         <tr>
             <th><?php echo $this->translate('Property'); ?></th>
-            <th><?php echo $this->translate('Property term'); ?></th>
-            <th><?php echo $this->translate('Alternate label'); ?></th>
             <th><?php echo $this->translate('Inverse property'); ?></th>
+            <th><?php echo $this->translate('Alternate label'); ?></th>
         </tr>
     </thead>
     <tbody>
@@ -28,9 +27,7 @@ $this->htmlElement('body')->appendAttribute('class', ' inverse-properties');
         $inverseProperty = $inverseProperties[$resourceTemplateProperty->getId()] ?? null;
         ?>
         <tr>
-            <td><?php echo $property->getLabel(); ?></td>
-            <td><?php echo sprintf('%s:%s', $property->getVocabulary()->getPrefix(), $property->getLocalName()); ?></td>
-            <td><?php echo $resourceTemplateProperty->getAlternateLabel(); ?></td>
+            <td><?php echo sprintf('%s : %s', $property->getVocabulary()->getLabel(), sprintf('<strong>%s</strong>', $property->getLabel())); ?></td>
             <td><?php echo $this->propertySelect([
                 'name' => sprintf('inverse_property_ids[%s]', $resourceTemplateProperty->getId()),
                 'options' => [
@@ -42,6 +39,7 @@ $this->htmlElement('body')->appendAttribute('class', ' inverse-properties');
                     'value' => $inverseProperty ? $inverseProperty->getId() : '',
                 ],
             ]); ?></td>
+            <td><?php echo $resourceTemplateProperty->getAlternateLabel(); ?></td>
         </tr>
         <?php endforeach; ?>
     </tbody>
