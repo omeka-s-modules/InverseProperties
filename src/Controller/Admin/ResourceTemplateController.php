@@ -19,8 +19,15 @@ class ResourceTemplateController extends AbstractActionController
     {
         $resourceTemplates = $this->api()->search('resource_templates', ['sort_by' => 'label'])->getContent();
 
+        $inverseProperties = [];
+        foreach ($resourceTemplates as $resourceTemplate) {
+            $inverses = $this->inverseProperties->getInverses($resourceTemplate->id());
+            $inverseProperties[$resourceTemplate->id()] = $inverses;
+        }
+
         $view = new ViewModel;
         $view->setVariable('resourceTemplates', $resourceTemplates);
+        $view->setVariable('inverseProperties', $inverseProperties);
         return $view;
     }
 
