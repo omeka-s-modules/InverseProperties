@@ -39,9 +39,11 @@ $resourceTemplatePorperties = $resourceTemplate->getResourceTemplateProperties()
             <td><?php echo $inverseProperty ? sprintf('%s : %s', $inverseProperty->getVocabulary()->getLabel(), sprintf('<strong>%s</strong>', $inverseProperty->getLabel())) : ''; ?></td>
             <td><?php echo $resourceTemplateProperty->getAlternateLabel(); ?></td>
             <td>
-                <?php foreach ($resourceTemplateProperty->getDataType() as $dataType): ?>
-                <?php echo $this->dataType()->getLabel($dataType); ?><br>
-                <?php endforeach; ?>
+                <ul>
+                    <?php foreach ($resourceTemplateProperty->getDataType() as $dataType): ?>
+                    <li><?php echo $this->dataType()->getLabel($dataType); ?></li>
+                    <?php endforeach; ?>
+                </ul>
             </td>
         </tr>
         <?php endforeach; ?>
