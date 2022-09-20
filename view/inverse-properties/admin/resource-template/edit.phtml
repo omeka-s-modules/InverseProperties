@@ -1,6 +1,7 @@
 <?php
 $this->headLink()->appendStylesheet($this->assetUrl('css/admin/inverse-properties.css', 'InverseProperties'));
 $this->htmlElement('body')->appendAttribute('class', 'inverse-properties');
+$resourceTemplatePorperties = $resourceTemplate->getResourceTemplateProperties();
 ?>
 
 <?php echo $this->pageTitle($this->translate('Properties'), 1, $this->translate('Inverse properties'), $resourceTemplate->getLabel()); ?>
@@ -20,6 +21,7 @@ $this->htmlElement('body')->appendAttribute('class', 'inverse-properties');
     Edit
 </div>
 
+<?php if ($resourceTemplatePorperties): ?>
 <table class="tablesaw batch-edit" data-tablesaw-mode="stack">
     <thead>
         <tr>
@@ -30,7 +32,7 @@ $this->htmlElement('body')->appendAttribute('class', 'inverse-properties');
         </tr>
     </thead>
     <tbody>
-        <?php foreach ($resourceTemplate->getResourceTemplateProperties() as $resourceTemplateProperty): ?>
+        <?php foreach ($resourceTemplatePorperties as $resourceTemplateProperty): ?>
         <?php
         $property = $resourceTemplateProperty->getProperty();
         $inverseProperty = $inverseProperties[$resourceTemplateProperty->getId()] ?? null;
@@ -58,5 +60,10 @@ $this->htmlElement('body')->appendAttribute('class', 'inverse-properties');
         <?php endforeach; ?>
     </tbody>
 </table>
+<?php else: ?>
+<div class="no-resources">
+    <p><?php echo $this->translate('No resource template properties found.'); ?></p>
+</div>
+<?php endif; ?>
 
 <?php echo $this->form()->closeTag(); ?>
