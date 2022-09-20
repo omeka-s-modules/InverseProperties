@@ -1,11 +1,12 @@
 # Inverse Properties
 
-An [Omeka S](https://omeka.org/s/) module for defining inverse relations between
-properties.
+An [Omeka S](https://omeka.org/s/) module for defining inverse properties between
+resources.
 
-This module allows administrators to define inverse relations between properties
-so that they can be concretely linked in both directions. In effect, it enables
-a custom implementation of [owl:inverseOf](https://www.w3.org/TR/owl-ref/#inverseOf-def).
+This module allows administrators to define inverse properties between resources
+(items, item sets, media) so that property values can be concretely linked in both
+directions. In effect, it enables a custom implementation of [owl:inverseOf](https://www.w3.org/TR/owl-ref/#inverseOf-def)
+integrated with Omeka S resource templates.
 
 # Copyright
 
