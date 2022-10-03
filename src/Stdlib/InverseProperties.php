@@ -63,10 +63,6 @@ class InverseProperties
                 // This property does not exist.
                 continue;
             }
-            if ($resourceTemplateProperty->getProperty()->getId() === $inverseProperty->getId()) {
-                // A property cannot be an inverse of itself.
-                continue;
-            }
             $inverse = $this->entityManager
                 ->getRepository('InverseProperties\Entity\InversePropertiesInverse')
                 ->findOneBy(['resourceTemplateProperty' => $resourceTemplateProperty]);
