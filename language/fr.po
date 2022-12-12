@@ -2,53 +2,57 @@
 # Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the PACKAGE package.
 # FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
-#
+# 
+# Translators:
+# Pols12 <poltron54@gmail.com>, 2022
+# 
 #, fuzzy
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2022-12-12 13:55-0500\n"
-"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
-"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
-"Language-Team: LANGUAGE <LL@li.org>\n"
-"Language: \n"
+"PO-Revision-Date: 2022-11-29 17:22+0000\n"
+"Last-Translator: Pols12 <poltron54@gmail.com>, 2022\n"
+"Language-Team: French (https://www.transifex.com/omeka/teams/14184/fr/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Language: fr\n"
+"Plural-Forms: nplurals=3; plural=(n == 0 || n == 1) ? 0 : n != 0 && n % 1000000 == 0 ? 1 : 2;\n"
 
 #: view/inverse-properties/admin/resource-template/browse.phtml:6
 #: view/inverse-properties/admin/resource-template/edit.phtml:7
 #: view/inverse-properties/admin/resource-template/show.phtml:7
 msgid "Inverse properties"
-msgstr ""
+msgstr "Propriétés inverses"
 
 #: view/inverse-properties/admin/resource-template/browse.phtml:18
 msgid "Inverse property count"
-msgstr ""
+msgstr "Nombre de propriétés inverses"
 
 #: view/inverse-properties/admin/resource-template/browse.phtml:33
 msgid "[No owner]"
-msgstr ""
+msgstr "[Sans propriétaire]"
 
 #: view/inverse-properties/admin/resource-template/browse.phtml:41
 msgid "No resource templates found."
-msgstr ""
+msgstr "Aucun modèle de ressource trouvée."
 
 #: view/inverse-properties/admin/resource-template/edit.phtml:29
 #: view/inverse-properties/admin/resource-template/show.phtml:26
 msgid "Inverse property"
-msgstr ""
+msgstr "Propriété inverse"
 
 #: view/inverse-properties/admin/resource-template/edit.phtml:67
 #: view/inverse-properties/admin/resource-template/show.phtml:54
 msgid "No resource template properties found."
-msgstr ""
+msgstr "Aucune propriété de modèle de ressourcée trouvée."
 
 #: config/module.config.php:45
 msgid "Inverse Properties"
-msgstr ""
+msgstr "Propriétés inverses"
 
 #: src/Controller/Admin/ResourceTemplateController.php:79
 msgid "Inverse properties successfully updated"
-msgstr ""
+msgstr "Les propriétés inverses ont bien été mises à jour."
