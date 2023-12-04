@@ -11,10 +11,10 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-12-12 13:55-0500\n"
+"POT-Creation-Date: 2023-12-04 10:49-0500\n"
 "PO-Revision-Date: 2022-11-29 17:22+0000\n"
 "Last-Translator: Pols12 <poltron54@gmail.com>, 2022\n"
-"Language-Team: French (https://www.transifex.com/omeka/teams/14184/fr/)\n"
+"Language-Team: French (https://app.transifex.com/omeka/teams/14184/fr/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -31,10 +31,6 @@ msgstr "Propriétés inverses"
 msgid "Inverse property count"
 msgstr "Nombre de propriétés inverses"
 
-#: view/inverse-properties/admin/resource-template/browse.phtml:33
-msgid "[No owner]"
-msgstr "[Sans propriétaire]"
-
 #: view/inverse-properties/admin/resource-template/browse.phtml:41
 msgid "No resource templates found."
 msgstr "Aucun modèle de ressource trouvée."
@@ -44,8 +40,8 @@ msgstr "Aucun modèle de ressource trouvée."
 msgid "Inverse property"
 msgstr "Propriété inverse"
 
-#: view/inverse-properties/admin/resource-template/edit.phtml:67
-#: view/inverse-properties/admin/resource-template/show.phtml:54
+#: view/inverse-properties/admin/resource-template/edit.phtml:69
+#: view/inverse-properties/admin/resource-template/show.phtml:56
 msgid "No resource template properties found."
 msgstr "Aucune propriété de modèle de ressourcée trouvée."
 

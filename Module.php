@@ -61,6 +61,21 @@ SQL;
             'api.update.post',
             [$this, 'setInversePropertyValues']
         );
+        $sharedEventManager->attach(
+            'Omeka\Api\Adapter\ItemSetAdapter',
+            'api.create.post',
+            [$this, 'setInversePropertyValues']
+        );
+        $sharedEventManager->attach(
+            'Omeka\Api\Adapter\ItemSetAdapter',
+            'api.update.post',
+            [$this, 'setInversePropertyValues']
+        );
+        $sharedEventManager->attach(
+            'Omeka\Api\Adapter\MediaAdapter',
+            'api.update.post',
+            [$this, 'setInversePropertyValues']
+        );
     }
 
     public function setInversePropertyValues(Event $event)
