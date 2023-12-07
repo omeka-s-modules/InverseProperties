@@ -146,6 +146,10 @@ class InverseProperties
                     // This property is not the inverse.
                     continue;
                 }
+                if ($resource !== $resourceValue->getValueResource()) {
+                    // This resource value's resource value is not the original resource.
+                    continue;
+                }
                 // This resource value already has the inverse value.
                 $hasInverse = true;
                 break;
