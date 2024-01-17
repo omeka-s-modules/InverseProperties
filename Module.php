@@ -76,10 +76,65 @@ SQL;
             'api.update.post',
             [$this, 'setInversePropertyValues']
         );
+
+        // Pass the "inverse_properties_set_inverses" flag with update and batch
+        // update requests. This signals the operation to set inverse property
+        // values.
+        $controllers = [
+            'Omeka\Controller\Admin\Item',
+            'Omeka\Controller\Admin\ItemSet',
+            'Omeka\Controller\Admin\Media',
+        ];
+        foreach ($controllers as $controller) {
+            $sharedEventManager->attach(
+                $controller,
+                'view.edit.form.after',
+                function (Event $event) {
+                    echo '<input type="hidden" name="inverse_properties_set_inverses" value="1">';
+                }
+            );
+        }
+        $sharedEventManager->attach(
+            'Omeka\Form\ResourceBatchUpdateForm',
+            'form.add_elements',
+            function (Event $event) {
+                $form = $event->getTarget();
+                $form->add([
+                    'type' => 'hidden',
+                    'name' => 'inverse_properties_set_inverses',
+                    'attributes' => [
+                        'value' => '1',
+                        'data-collection-action' => 'replace',
+                    ],
+                ]);
+            }
+        );
+        $sharedEventManager->attach(
+            'Omeka\Api\Adapter\ItemAdapter',
+            'api.preprocess_batch_update',
+            function (Event $event) {
+                $data = $event->getParam('data');
+                $rawData = $event->getParam('request')->getContent();
+                if (isset($rawData['inverse_properties_set_inverses'])) {
+                    $data['inverse_properties_set_inverses'] = $rawData['inverse_properties_set_inverses'];
+                }
+                $event->setParam('data', $data);
+            }
+        );
     }
 
     public function setInversePropertyValues(Event $event)
     {
+        $request = $event->getParam('request');
+
+        // Set inverse property values only if the "inverse_properties_set_inverses"
+        // flag is passed. This is mainly needed because a batch update request
+        // calls batchUpdate() for every collectionAction set to the request,
+        // which could result in more than one inverse value being set.
+        $setInverses = (bool) $request->getValue('inverse_properties_set_inverses', false);
+        if (!$setInverses) {
+            return;
+        }
         $resource = $event->getParam('response')->getContent();
         $this->getServiceLocator()
             ->get('InverseProperties\InverseProperties')
