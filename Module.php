@@ -99,11 +99,19 @@ SQL;
             'form.add_elements',
             function (Event $event) {
                 $form = $event->getTarget();
+
+                $groups = $form->getOption('element_groups');
+                $groups['inverse_properties'] = 'Inverse properties'; // @translate
+                $form->setOption('element_groups', $groups);
+
                 $form->add([
-                    'type' => 'hidden',
+                    'type' => 'checkbox',
                     'name' => 'inverse_properties_set_inverses',
+                    'options' => [
+                        'element_group' => 'inverse_properties',
+                        'label' => 'Set inverse property values', // @translate
+                    ],
                     'attributes' => [
-                        'value' => '1',
                         'data-collection-action' => 'replace',
                     ],
                 ]);
