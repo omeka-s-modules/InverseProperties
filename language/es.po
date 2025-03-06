@@ -11,7 +11,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-01-22 10:38-0500\n"
+"POT-Creation-Date: 2025-03-06 09:05-0500\n"
 "PO-Revision-Date: 2022-11-29 17:22+0000\n"
 "Last-Translator: Alfonso Montejo <almontejor@gmail.com>, 2022\n"
 "Language-Team: Spanish (https://app.transifex.com/omeka/teams/14184/es/)\n"
@@ -45,14 +45,14 @@ msgstr "Propiedad inversa"
 msgid "No resource template properties found."
 msgstr "No se han encontrado propiedades de plantillas de recursos."
 
-#: Module.php:112
-msgid "Set inverse property values"
-msgstr ""
+#: src/Controller/Admin/ResourceTemplateController.php:79
+msgid "Inverse properties successfully updated"
+msgstr "Propiedades inversas actualizadas con éxito"
 
 #: config/module.config.php:45
 msgid "Inverse Properties"
 msgstr "Propiedades inversas"
 
-#: src/Controller/Admin/ResourceTemplateController.php:79
-msgid "Inverse properties successfully updated"
-msgstr "Propiedades inversas actualizadas con éxito"
+#: Module.php:119
+msgid "Set inverse property values"
+msgstr ""

@@ -11,7 +11,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-01-22 10:38-0500\n"
+"POT-Creation-Date: 2025-03-06 09:05-0500\n"
 "PO-Revision-Date: 2022-11-29 17:22+0000\n"
 "Last-Translator: Iametza Interaktiboa, 2022\n"
 "Language-Team: Basque (https://app.transifex.com/omeka/teams/14184/eu/)\n"
@@ -45,14 +45,14 @@ msgstr "Alderantzizko propietatea"
 msgid "No resource template properties found."
 msgstr "Ez da baliabide txantiloi propietaterik aurkitu."
 
-#: Module.php:112
-msgid "Set inverse property values"
-msgstr ""
+#: src/Controller/Admin/ResourceTemplateController.php:79
+msgid "Inverse properties successfully updated"
+msgstr "Alderantzizko propietateak ongi eguneratu dira"
 
 #: config/module.config.php:45
 msgid "Inverse Properties"
 msgstr "Alderantzizko Propietateak"
 
-#: src/Controller/Admin/ResourceTemplateController.php:79
-msgid "Inverse properties successfully updated"
-msgstr "Alderantzizko propietateak ongi eguneratu dira"
+#: Module.php:119
+msgid "Set inverse property values"
+msgstr ""

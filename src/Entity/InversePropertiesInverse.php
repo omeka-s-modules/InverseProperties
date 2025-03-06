@@ -46,12 +46,12 @@ class InversePropertiesInverse extends AbstractEntity
      */
     protected $resourceTemplate;
 
-    public function setResourceTemplate(ResourceTemplate $resourceTemplate) : void
+    public function setResourceTemplate(ResourceTemplate $resourceTemplate): void
     {
         $this->resourceTemplate = $resourceTemplate;
     }
 
-    public function getResourceTemplate() : ResourceTemplate
+    public function getResourceTemplate(): ResourceTemplate
     {
         return $this->resourceTemplate;
     }
@@ -67,12 +67,12 @@ class InversePropertiesInverse extends AbstractEntity
      */
     protected $resourceTemplateProperty;
 
-    public function setResourceTemplateProperty(ResourceTemplateProperty $resourceTemplateProperty) : void
+    public function setResourceTemplateProperty(ResourceTemplateProperty $resourceTemplateProperty): void
     {
         $this->resourceTemplateProperty = $resourceTemplateProperty;
     }
 
-    public function getResourceTemplateProperty() : ResourceTemplateProperty
+    public function getResourceTemplateProperty(): ResourceTemplateProperty
     {
         return $this->resourceTemplateProperty;
     }
@@ -88,12 +88,12 @@ class InversePropertiesInverse extends AbstractEntity
      */
     protected $inverseProperty;
 
-    public function setInverseProperty(Property $inverseProperty) : void
+    public function setInverseProperty(Property $inverseProperty): void
     {
         $this->inverseProperty = $inverseProperty;
     }
 
-    public function getInverseProperty() : Property
+    public function getInverseProperty(): Property
     {
         return $this->inverseProperty;
     }

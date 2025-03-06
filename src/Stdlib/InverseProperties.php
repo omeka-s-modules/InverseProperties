@@ -20,7 +20,7 @@ class InverseProperties
     /**
      * Get an entity.
      */
-    public function getEntity(string $entityName, int $entityId) : ?Entity\EntityInterface
+    public function getEntity(string $entityName, int $entityId): ?Entity\EntityInterface
     {
         return $this->entityManager->find($entityName, $entityId);
     }
@@ -28,7 +28,7 @@ class InverseProperties
     /**
      * Get inverse entities for a resource template.
      */
-    public function getInverses(int $resourceTemplateId) : array
+    public function getInverses(int $resourceTemplateId): array
     {
         return $this->entityManager
             ->getRepository('InverseProperties\Entity\InversePropertiesInverse')
@@ -38,7 +38,7 @@ class InverseProperties
     /**
      * Set inverse properties for a resource template.
      */
-    public function setInverseProperties(int $resourceTemplateId, array $inversePropertyIds) : void
+    public function setInverseProperties(int $resourceTemplateId, array $inversePropertyIds): void
     {
         $resourceTemplate = $this->getEntity('Omeka\Entity\ResourceTemplate', $resourceTemplateId);
         if (!$resourceTemplate) {
@@ -96,7 +96,7 @@ class InverseProperties
     /**
      * Set inverse property values for a resource entity.
      */
-    public function setInversePropertyValues(Entity\Resource $resource) : void
+    public function setInversePropertyValues(Entity\Resource $resource): void
     {
         $resourceTemplate = $resource->getResourceTemplate();
         if (!$resourceTemplate) {
