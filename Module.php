@@ -77,15 +77,22 @@ SQL;
             [$this, 'setInversePropertyValues']
         );
 
-        // Pass the "inverse_properties_set_inverses" flag with update and batch
-        // update requests. This signals the operation to set inverse property
-        // values.
+        // Pass the "inverse_properties_set_inverses" flag with add, update, and
+        // batch update requests. This signals the operation to set inverse
+        // property values.
         $controllers = [
             'Omeka\Controller\Admin\Item',
             'Omeka\Controller\Admin\ItemSet',
             'Omeka\Controller\Admin\Media',
         ];
         foreach ($controllers as $controller) {
+            $sharedEventManager->attach(
+                $controller,
+                'view.add.form.after',
+                function (Event $event) {
+                    echo '<input type="hidden" name="inverse_properties_set_inverses" value="1">';
+                }
+            );
             $sharedEventManager->attach(
                 $controller,
                 'view.edit.form.after',
@@ -120,14 +127,12 @@ SQL;
         $sharedEventManager->attach(
             'Omeka\Api\Adapter\ItemAdapter',
             'api.preprocess_batch_update',
-            function (Event $event) {
-                $data = $event->getParam('data');
-                $rawData = $event->getParam('request')->getContent();
-                if (isset($rawData['inverse_properties_set_inverses'])) {
-                    $data['inverse_properties_set_inverses'] = $rawData['inverse_properties_set_inverses'];
-                }
-                $event->setParam('data', $data);
-            }
+            [$this, 'preprocessBatchUpdate']
+        );
+        $sharedEventManager->attach(
+            'Omeka\Api\Adapter\ItemSetAdapter',
+            'api.preprocess_batch_update',
+            [$this, 'preprocessBatchUpdate']
         );
     }
 
@@ -147,5 +152,15 @@ SQL;
         $this->getServiceLocator()
             ->get('InverseProperties\InverseProperties')
             ->setInversePropertyValues($resource);
+    }
+
+    public function preprocessBatchUpdate(Event $event)
+    {
+        $data = $event->getParam('data');
+        $rawData = $event->getParam('request')->getContent();
+        if (isset($rawData['inverse_properties_set_inverses'])) {
+            $data['inverse_properties_set_inverses'] = $rawData['inverse_properties_set_inverses'];
+        }
+        $event->setParam('data', $data);
     }
 }
